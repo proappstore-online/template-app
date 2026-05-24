@@ -7,8 +7,8 @@ A Pro app on ProAppStore.
 - Build: `pnpm build` (runs platform compliance check via prebuild)
 - Deploy: `git push origin main` (auto-deploys via Cloudflare Pages)
 
-For platform conventions, read SKILLS.md:
-https://raw.githubusercontent.com/proappstore-online/proappstore/main/SKILLS.md
+For platform conventions, read the AI Agent Guide:
+https://proappstore.online/skills.md
 
 ## SDK
 
