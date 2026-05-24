@@ -4,7 +4,6 @@
   "packageManager": "pnpm@10.30.3",
   "engines": { "node": ">=22" },
   "pnpm": { "onlyBuiltDependencies": ["esbuild"] },
-  "repository": { "type": "git", "url": "git+https://github.com/proappstore-online/APPNAME.git" },
   "scripts": {
     "dev": "pnpm --filter @APPNAME/web dev",
     "prebuild": "npx -y @proappstore/cli@latest check",

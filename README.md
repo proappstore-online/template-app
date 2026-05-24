@@ -1,6 +1,6 @@
 # template-standalone
 
-The standalone-app template used by [`pas init`](https://github.com/proappstore-online/platform/tree/main/packages/cli) to scaffold new Pro apps for [ProAppStore](https://proappstore.online).
+The standalone-app template used by [`pas create`](https://proappstore.online/docs) to scaffold new Pro apps for [ProAppStore](https://proappstore.online).
 
 You almost certainly want to use the CLI, not clone this directly:
 
