@@ -5,7 +5,7 @@ A Pro app on ProAppStore.
 - Subdomain: `APPNAME.proappstore.online`
 - Dev: `pnpm install && pnpm dev`
 - Build: `pnpm build` (runs platform compliance check via prebuild)
-- Deploy: `git push origin main` (auto-deploys via Cloudflare Pages)
+- Deploy: `git push origin main` (auto-deploys via GitHub Actions → R2)
 
 For platform conventions, read the AI Agent Guide:
 https://proappstore.online/skills.md
