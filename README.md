@@ -17,7 +17,8 @@ The CLI clones this template, replaces every `APPNAME` placeholder with your app
 - `web/src/App.tsx` — Starter component with `initPro()` + `useProAuth()`.
 - `web/src/index.css` — Platform design system (Manrope + Fraunces fonts, full light/dark theme tokens).
 - `web/index.html` — PWA and link-preview meta tags, font preloading, analytics script.
-- `web/public/icon-192.png` and `web/public/icon-512.png` — app icons. Replace these in GitHub to change browser, install, and shared-link previews for `https://APPNAME.proappstore.online`.
+- `web/public/icon-192.png` and `web/public/icon-512.png` — browser and install icons.
+- `web/public/og-image.png` — 1200x630 shared-link preview image for `https://APPNAME.proappstore.online`.
 - `package.json` — pnpm workspace, `dev` / `build` / `typecheck` scripts. `prebuild` runs platform compliance check.
 - `.github/workflows/` — deploy (CF Pages), compliance (MIT + brand + PWA), CI (typecheck).
 - `.gitignore` — excludes node_modules, dist, .env files.
