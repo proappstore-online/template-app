@@ -1,6 +1,6 @@
 # template-app
 
-The app template used by [`pas create`](https://proappstore.online/docs) to scaffold new Pro apps for [ProAppStore](https://proappstore.online).
+The app template used by [`pas create`](https://docs.proappstore.online/) to scaffold new Pro apps for [ProAppStore](https://proappstore.online).
 
 You almost certainly want to use the CLI, not clone this directly:
 
