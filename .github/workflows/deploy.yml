@@ -81,7 +81,7 @@ jobs:
           fi
 
       - name: Code health scan
-        run: npx @vibecodeqa/cli@0.31 --json --badge > /dev/null 2>&1 || true
+        run: npx -y @vibecodeqa/cli@0.44.0 --json --badge > /dev/null 2>&1 || true
 
       - name: Upload code health
         if: always()
