@@ -21,6 +21,12 @@ function Home() {
           Signed in as <strong>{user?.name}</strong>. Edit{' '}
           <code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">web/src/App.tsx</code> to start building.
         </p>
+        <a
+          href="https://proappstore.online"
+          className="mt-6 inline-block text-xs font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
+        >
+          Built for ProAppStore
+        </a>
       </div>
     </div>
   )
