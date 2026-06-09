@@ -74,8 +74,8 @@ jobs:
           APP_ID="${GITHUB_REPOSITORY##*/}"
           URL="https://${APP_ID}.proappstore.online"
           STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$URL" --max-time 10 || echo "000")
-          if [ "$STATUS" = "530" ] || [ "$STATUS" = "522" ] || [ "$STATUS" = "000" ]; then
-            echo "::warning::Deployed to R2 but ${URL} returned HTTP ${STATUS} (not routed). Run 'npx @proappstore/cli publish' to register the route."
+          if [ "$STATUS" -lt 200 ] || [ "$STATUS" -ge 400 ]; then
+            echo "::warning::Deployed to R2 but ${URL} returned HTTP ${STATUS}. Run 'npx @proappstore/cli publish' to register the route."
           else
             echo "Live at ${URL} (HTTP ${STATUS})"
           fi
