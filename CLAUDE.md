@@ -68,10 +68,25 @@ owner opened the app).
   `INSERT INTO`. Destructive statements (`DROP`, `RENAME`, `DELETE`, `UPDATE`, `PRAGMA`)
   are **rejected** — the deploy fails. Evolve schema by adding columns/tables, never
   by dropping (expand/contract). Keep new columns nullable or defaulted so existing
-  rows stay valid and old code keeps working.
+  rows stay valid and old code keeps working. `ALTER TABLE ... ADD COLUMN ... NOT NULL`
+  without a non-null `DEFAULT` is also rejected; add a nullable/defaulted column first, deploy
+  compatible code, then tighten/contract in a later release if still needed.
 - **Never edit an already-applied migration** — add a new one (`0002_…`, `0003_…`).
   Applied names are tracked, so re-deploys are idempotent (already-applied ones skip).
 - Whatever columns your `mcp.json` actions read/write must exist in `migrations.json`.
+
+Expand/contract example for a future change:
+
+```jsonc
+{
+  "name": "0002_add_priority",
+  "sql": "ALTER TABLE items ADD COLUMN priority TEXT DEFAULT 'normal'"
+}
+```
+
+Deploy code that can read existing rows with the defaulted/nullable column. Do not
+rename/drop/tighten the old shape until a later contract release, after no deployed
+code depends on it.
 
 The in-browser `app.db.migrate([...])` below still works for local iteration, but the
 committed `migrations.json` is authoritative — it runs on every deploy, for everyone,
