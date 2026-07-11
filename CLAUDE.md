@@ -45,10 +45,42 @@ UI: `import { ProShell, Avatar, ProBadge } from '@proappstore/sdk/ui'`
 
 All database operations require the user to be signed in. There is no anonymous/public read access.
 
+### Schema: `migrations.json` (canonical, applied at deploy time)
+
+The repo's `migrations.json` at the root is the source of truth for this app's D1
+schema. The deploy workflow applies it **before** the new frontend uploads and
+**before** `mcp.json` actions register — so your registered actions can never
+reference a column that isn't there yet. This is what keeps schema and code from
+drifting (the failure that 500'd users when a migration only ran the first time an
+owner opened the app).
+
+```jsonc
+// migrations.json — one entry per migration, applied in order, tracked by name.
+{
+  "migrations": [
+    { "name": "0001_init", "sql": "CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY, user_id TEXT, title TEXT NOT NULL, status TEXT, created_at INTEGER NOT NULL)" }
+  ]
+}
+```
+
+**Rules for `migrations.json` (enforced by the platform on deploy):**
+- **Additive only** — `CREATE TABLE/INDEX/VIEW/TRIGGER`, `ALTER TABLE … ADD COLUMN`,
+  `INSERT INTO`. Destructive statements (`DROP`, `RENAME`, `DELETE`, `UPDATE`, `PRAGMA`)
+  are **rejected** — the deploy fails. Evolve schema by adding columns/tables, never
+  by dropping (expand/contract). Keep new columns nullable or defaulted so existing
+  rows stay valid and old code keeps working.
+- **Never edit an already-applied migration** — add a new one (`0002_…`, `0003_…`).
+  Applied names are tracked, so re-deploys are idempotent (already-applied ones skip).
+- Whatever columns your `mcp.json` actions read/write must exist in `migrations.json`.
+
+The in-browser `app.db.migrate([...])` below still works for local iteration, but the
+committed `migrations.json` is authoritative — it runs on every deploy, for everyone,
+before any dependent code goes live.
+
 ```ts
-// Schema migrations (run lazily, tracked by name)
+// Schema migrations (run lazily, tracked by name) — mirrors migrations.json
 await app.db.migrate([
-  { name: '0001_init', sql: 'CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY, title TEXT NOT NULL, created_at INTEGER NOT NULL)' },
+  { name: '0001_init', sql: 'CREATE TABLE IF NOT EXISTS items (id TEXT PRIMARY KEY, user_id TEXT, title TEXT NOT NULL, status TEXT, created_at INTEGER NOT NULL)' },
 ])
 
 // Queries
