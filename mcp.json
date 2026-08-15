@@ -6,9 +6,20 @@
       "operation": "query",
       "sql": "SELECT * FROM items WHERE (:status IS NULL OR status = :status) ORDER BY created_at DESC LIMIT :limit",
       "params": {
-        "status": { "type": "string", "optional": true, "description": "Filter by status" },
-        "limit": { "type": "integer", "optional": true, "default": 20, "max": 100, "description": "Max results" }
-      }
+        "status": {
+          "type": "string",
+          "optional": true,
+          "description": "Filter by status"
+        },
+        "limit": {
+          "type": "integer",
+          "optional": true,
+          "default": 20,
+          "max": 100,
+          "description": "Max results"
+        }
+      },
+      "requires_auth": false
     },
     {
       "name": "get_item",
@@ -16,8 +27,12 @@
       "operation": "query",
       "sql": "SELECT * FROM items WHERE id = :id",
       "params": {
-        "id": { "type": "string", "description": "Item ID" }
-      }
+        "id": {
+          "type": "string",
+          "description": "Item ID"
+        }
+      },
+      "requires_auth": false
     },
     {
       "name": "create_item",
@@ -25,7 +40,10 @@
       "operation": "execute",
       "sql": "INSERT INTO items (id, user_id, title, created_at) VALUES (:__uuid, :__user_id, :title, :__now)",
       "params": {
-        "title": { "type": "string", "description": "Item title" }
+        "title": {
+          "type": "string",
+          "description": "Item title"
+        }
       },
       "requires_auth": true
     }
