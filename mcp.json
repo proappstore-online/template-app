@@ -19,7 +19,7 @@
           "description": "Max results"
         }
       },
-      "requires_auth": false
+      "requires_auth": true
     },
     {
       "name": "get_item",
@@ -32,7 +32,7 @@
           "description": "Item ID"
         }
       },
-      "requires_auth": false
+      "requires_auth": true
     },
     {
       "name": "create_item",
