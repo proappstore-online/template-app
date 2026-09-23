@@ -4,7 +4,7 @@
       "name": "list_items",
       "description": "List items from the app database",
       "operation": "query",
-      "sql": "SELECT * FROM items WHERE (:status IS NULL OR status = :status) ORDER BY created_at DESC LIMIT :limit",
+      "sql": "SELECT * FROM items WHERE user_id = :__user_id AND (:status IS NULL OR status = :status) ORDER BY created_at DESC LIMIT :limit",
       "params": {
         "status": {
           "type": "string",
@@ -25,7 +25,7 @@
       "name": "get_item",
       "description": "Get a single item by ID",
       "operation": "query",
-      "sql": "SELECT * FROM items WHERE id = :id",
+      "sql": "SELECT * FROM items WHERE id = :id AND user_id = :__user_id",
       "params": {
         "id": {
           "type": "string",
