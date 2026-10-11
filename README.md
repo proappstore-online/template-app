@@ -17,7 +17,7 @@ Need schedules, webhooks, or server routes? Scaffold the optional app worker:
 pas create my-app --with-worker
 ```
 
-This adds `worker/` for those workloads. Worker execution is enabled per app by a platform administrator.
+This adds a `worker/` directory for those workloads. `worker/` is absent by default — the deploy workflow builds and uploads it only when `worker/package.json` exists, so apps without one deploy unchanged. The worker scaffold ships inside the CLI (not in this repo). Worker execution must be enabled per app by a platform administrator before the first worker deployment takes effect.
 
 ## What's in here
 
@@ -28,7 +28,7 @@ This adds `worker/` for those workloads. Worker execution is enabled per app by 
 - `web/public/icon-192.png` and `web/public/icon-512.png` — browser and install icons.
 - `web/public/og-image.png` — neutral 1200x630 shared-link preview image for `https://APPNAME.proappstore.online`.
 - `package.json` — pnpm workspace, `dev` / `build` / `typecheck` scripts. `prebuild` runs platform compliance check.
-- `.github/workflows/` — deploy (CF Pages), compliance (MIT + brand + PWA), CI (typecheck).
+- `.github/workflows/` — deploy (R2, keyless OIDC), compliance (MIT + brand + PWA), CI (typecheck); worker step runs only when `worker/package.json` exists.
 - `.gitignore` — excludes node_modules, dist, .env files.
 
 ## Scaffolding manually
