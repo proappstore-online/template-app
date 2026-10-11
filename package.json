@@ -10,6 +10,6 @@
     "build": "pnpm --filter @APPNAME/web build",
     "preview": "pnpm --filter @APPNAME/web preview",
     "typecheck": "pnpm --filter @APPNAME/web exec tsc -b",
-    "test": "pnpm --filter @APPNAME/web exec tsc -b"
+    "test": "pnpm --filter @APPNAME/web exec tsc -b && node --test tests/*.test.mjs"
   }
 }

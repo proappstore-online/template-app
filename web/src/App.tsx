@@ -15,7 +15,7 @@ const NAV: NavItem[] = [
 
 export default function App() {
   return (
-    <ProShell app={app} appName="APPNAME" nav={NAV}>
+    <ProShell app={app} appName="APPNAME" nav={NAV} branding="app">
       <Screens />
     </ProShell>
   )
@@ -51,12 +51,6 @@ function About() {
         Replace this screen with your own. The error boundary, loading fallback, toasts
         (<code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">useToast</code>), offline banner and skip link come with ProShell.
       </p>
-      <a
-        href="https://proappstore.online"
-        className="mt-6 inline-block text-xs font-semibold text-[var(--accent)] underline-offset-4 hover:underline"
-      >
-        Built for ProAppStore
-      </a>
     </div>
   )
 }

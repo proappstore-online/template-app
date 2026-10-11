@@ -1,11 +1,18 @@
-# APPNAME (Pro)
+# APPNAME
 
-A Pro app on ProAppStore.
+An independently branded app.
 
 - Subdomain: `APPNAME.proappstore.online`
 - Dev: `pnpm install && pnpm dev`
 - Build: `pnpm build` (runs platform compliance check via prebuild)
 - Deploy: `git push origin main` (auto-deploys via GitHub Actions → R2)
+
+## Public branding
+
+Keep public app surfaces app-owned. The starter passes `branding="app"` to
+`ProShell`; do not remove it unless the app owner explicitly wants platform
+branding. Do not add required platform attribution to the app UI, metadata, PWA
+manifest, or Open Graph image.
 
 For platform conventions, read the AI Agent Guide:
 https://proappstore.online/skills.md

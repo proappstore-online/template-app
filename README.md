@@ -9,16 +9,24 @@ npm i -g @proappstore/cli
 pas create my-app
 ```
 
-The CLI clones this template, replaces every `APPNAME` placeholder with your app id, runs `pnpm install`, initializes git, and makes the first commit — the result is a runnable app you can `pnpm dev` immediately.
+The CLI clones this template, replaces every `APPNAME` placeholder with your app id, runs `pnpm install`, initializes git, and makes the first commit — the result is a runnable app you can `pnpm dev` immediately. The starter is independently branded: its shell, public metadata, PWA manifest, and link preview contain no required platform attribution.
+
+Need schedules, webhooks, or server routes? Scaffold the optional app worker:
+
+```bash
+pas create my-app --with-worker
+```
+
+This adds `worker/` for those workloads. Worker execution is enabled per app by a platform administrator.
 
 ## What's in here
 
 - `web/` — Vite + React + TypeScript app, ESM-only, Tailwind 4 via CSS variables.
-- `web/src/App.tsx` — Starter component with `initPro()` + `useProAuth()`.
+- `web/src/App.tsx` — Starter component with `initPro()` + `useAuth()` and app-owned shell branding.
 - `web/src/index.css` — Platform design system (Manrope + Fraunces fonts, full light/dark theme tokens).
-- `web/index.html` — PWA and link-preview meta tags, font preloading, analytics script.
+- `web/index.html` — App-owned PWA and link-preview meta tags, font preloading, analytics script.
 - `web/public/icon-192.png` and `web/public/icon-512.png` — browser and install icons.
-- `web/public/og-image.png` — 1200x630 shared-link preview image for `https://APPNAME.proappstore.online`.
+- `web/public/og-image.png` — neutral 1200x630 shared-link preview image for `https://APPNAME.proappstore.online`.
 - `package.json` — pnpm workspace, `dev` / `build` / `typecheck` scripts. `prebuild` runs platform compliance check.
 - `.github/workflows/` — deploy (CF Pages), compliance (MIT + brand + PWA), CI (typecheck).
 - `.gitignore` — excludes node_modules, dist, .env files.
