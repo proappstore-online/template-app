@@ -19,9 +19,9 @@ https://proappstore.online/skills.md
 
 ## Marketing site
 
-`marketing/` is the static Astro site for `about-APPNAME.proappstore.online` (home,
+`marketing/` is the static Astro + Tailwind site for `about-APPNAME.proappstore.online` (home,
 Privacy Policy, Terms & Conditions). Edit copy, owner, contact and colours in
-`marketing/src/site.ts` and the pages freely; keep claims true and the Astro version
+`marketing/src/site.ts` (colours feed the Tailwind theme) and the pages freely; keep claims true and versions
 pinned. `pnpm dev:marketing` / `pnpm build:marketing` (HTML in `marketing/dist/`).
 
 ## SDK

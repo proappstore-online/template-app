@@ -1,4 +1,5 @@
 ---
+import '../styles/global.css'
 import { site } from '../site'
 
 interface Props {
@@ -8,67 +9,56 @@ interface Props {
 
 const { title, description } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site)
-const { colors } = site
-// The palette as CSS custom properties (--accent, --accentDeep, ...), set on <html>.
-const palette = Object.entries(colors).map(([name, value]) => `--${name}: ${value}`).join('; ')
+const socialImage = new URL(site.heroImage?.src ?? 'og-image.png', site.heroImage ? Astro.site : site.appUrl)
+// Brand colours as --brand-* custom properties; src/styles/global.css maps them into the Tailwind theme.
+const palette = Object.entries(site.colors)
+  .map(([name, value]) => `--brand-${name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}: ${value}`)
+  .join('; ')
+const links = [
+  { label: 'Privacy Policy', url: '/privacy/' },
+  { label: 'Terms & Conditions', url: '/terms/' },
+  site.supportUrl && { label: 'Support', url: site.supportUrl },
+  site.contactEmail && { label: 'Contact', url: `mailto:${site.contactEmail}` },
+].filter((link) => !!link)
 ---
 <!doctype html>
-<html lang="en" style={palette}>
+<html lang="en" style={palette} class="scroll-smooth motion-reduce:scroll-auto">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content={colors.accent} />
+    <meta name="theme-color" content={site.colors.accent} />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/icon-192.png" type="image/png" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL('og-image.png', site.appUrl)} />
+    <meta property="og:image" content={socialImage} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <slot name="head" />
   </head>
   <body>
-    <a class="skip" href="#main">Skip to content</a>
-    <header class="wrap topbar">
-      <a class="brand" href="/"><img src="/icon-192.png" alt="" width="28" height="28" />{site.name}</a>
-      <a class="button" href={site.appUrl}>{site.cta}</a>
+    <a class="absolute -left-[999px] top-3 z-10 bg-paper p-2.5 focus:left-3" href="#main">Skip to content</a>
+    <header class="mx-auto flex h-20 w-[min(1160px,calc(100%-48px))] items-center justify-between max-sm:h-18">
+      <a class="inline-flex items-center gap-3 text-lg font-extrabold tracking-tight no-underline" href="/">
+        <img src="/icon-192.png" alt="" width="28" height="28" class="rounded-lg" />{site.name}
+      </a>
+      <a class="border-b border-current pb-0.5 font-bold no-underline" href={site.appUrl}>{site.ctaLabel}<span aria-hidden="true"> ↗</span></a>
     </header>
     <main id="main">
       <slot />
     </main>
-    <footer class="wrap">
-      <span>© {new Date().getFullYear()} {site.owner}</span>
-      <nav aria-label="Legal">
-        <a href="/privacy/">Privacy Policy</a>
-        <a href="/terms/">Terms &amp; Conditions</a>
-        {site.contactEmail && <a href={`mailto:${site.contactEmail}`}>Contact</a>}
+    <footer class="mx-auto flex w-[min(1160px,calc(100%-48px))] items-center justify-between gap-6 pt-9 pb-14 text-sm text-muted max-sm:flex-col max-sm:items-start">
+      <span class="font-extrabold text-ink">© {new Date().getFullYear()} {site.owner}</span>
+      <nav aria-label="Legal and support" class="flex flex-wrap gap-6">
+        {links.map((link) => <a class="no-underline hover:underline" href={link.url}>{link.label}</a>)}
       </nav>
     </footer>
   </body>
 </html>
-
-<style is:global>
-  * { box-sizing: border-box; }
-  body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.6 system-ui, -apple-system, "Segoe UI", sans-serif; }
-  a { color: var(--accentDeep); }
-  img { max-width: 100%; height: auto; }
-  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
-  .wrap { width: min(1100px, calc(100% - 40px)); margin-inline: auto; }
-  .skip { position: absolute; left: -999px; top: 12px; background: var(--paper); padding: 8px 12px; }
-  .skip:focus { left: 12px; }
-  .topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 20px; }
-  .brand { display: inline-flex; align-items: center; gap: 10px; color: var(--ink); font-weight: 800; font-size: 1.1rem; text-decoration: none; }
-  .brand img { border-radius: 7px; }
-  .button { display: inline-block; background: var(--accentDeep); color: #fff; border-radius: 8px; padding: 12px 20px; font-weight: 700; text-decoration: none; }
-  .button:hover { filter: brightness(1.1); }
-  .eyebrow { margin: 0 0 12px; color: var(--accentDeep); font-size: .75rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase; }
-  h1, h2, h3 { line-height: 1.15; letter-spacing: -.02em; }
-  footer { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-block: 40px; border-top: 1px solid #0000001a; color: var(--muted); font-size: .9rem; }
-  footer nav { display: flex; flex-wrap: wrap; gap: 20px; }
-  .legal { max-width: 720px; padding-block: 32px 64px; }
-  .legal h1 { font-size: clamp(2rem, 5vw, 3rem); margin: 0 0 8px; }
-  .legal h2 { font-size: 1.25rem; margin: 36px 0 8px; }
-  .legal .updated { color: var(--muted); margin: 0 0 24px; }
-</style>
