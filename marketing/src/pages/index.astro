@@ -1,0 +1,54 @@
+---
+import Layout from '../layouts/Layout.astro'
+import { site } from '../site'
+---
+<Layout title={`${site.name} — ${site.headline}`} description={site.summary}>
+  <section class="wrap hero">
+    <h1>{site.headline}</h1>
+    <p class="lead">{site.summary}</p>
+    <a class="button" href={site.appUrl}>{site.cta}</a>
+  </section>
+
+  <section class="band">
+    <div class="wrap">
+      <p class="eyebrow">Why {site.name}</p>
+      <h2>What you can do</h2>
+      <div class="grid">
+        {site.benefits.map((benefit) => (
+          <article class="card"><h3>{benefit.title}</h3><p>{benefit.body}</p></article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap steps">
+    <p class="eyebrow">How it works</p>
+    <h2>Up and running in minutes</h2>
+    <ol>
+      {site.howItWorks.map((step) => <li><h3>{step.title}</h3><p>{step.body}</p></li>)}
+    </ol>
+  </section>
+
+  <section class="wrap closing">
+    <h2>Ready to try {site.name}?</h2>
+    <a class="button" href={site.appUrl}>{site.cta}</a>
+  </section>
+</Layout>
+
+<style>
+  .hero { padding-block: 72px 96px; max-width: 760px; }
+  .hero h1 { font-size: clamp(2.6rem, 7vw, 4.8rem); margin: 0; }
+  .lead { font-size: clamp(1.05rem, 2vw, 1.3rem); color: var(--muted); margin: 24px 0 32px; }
+  h2 { font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 0 0 32px; }
+  .band { background: var(--paperDeep); padding-block: 80px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; }
+  .card { background: var(--paper); border: 1px solid #00000014; border-radius: 12px; padding: 24px; }
+  .card h3, .steps h3 { margin: 0 0 8px; font-size: 1.2rem; }
+  .card p, .steps p { margin: 0; color: var(--muted); }
+  .steps { padding-block: 80px; }
+  .steps ol { list-style: none; counter-reset: step; margin: 0; padding: 0; display: grid; gap: 28px; }
+  .steps li { counter-increment: step; position: relative; padding-left: 56px; }
+  .steps li::before { content: counter(step); position: absolute; left: 0; top: 0; width: 36px; height: 36px; display: grid; place-items: center; border-radius: 50%; background: var(--accentSoft); color: var(--accentDeep); font-weight: 800; }
+  .closing { text-align: center; padding-block: 64px 96px; }
+  .closing h2 { margin-bottom: 24px; }
+</style>

@@ -27,6 +27,7 @@ This adds a `worker/` directory for those workloads. `worker/` is absent by defa
 - `web/index.html` — App-owned PWA and link-preview meta tags, font preloading, analytics script.
 - `web/public/icon-192.png` and `web/public/icon-512.png` — browser and install icons.
 - `web/public/og-image.png` — neutral 1200x630 shared-link preview image for `https://APPNAME.proappstore.online`.
+- `marketing/` — Astro (pinned) static marketing site for `https://about-APPNAME.proappstore.online`: home, Privacy Policy and Terms & Conditions. Copy, owner, contact and colours live in `marketing/src/site.ts`. `pnpm build:marketing` writes static HTML to `marketing/dist/`; `pnpm dev:marketing` previews it.
 - `package.json` — pnpm workspace, `dev` / `build` / `typecheck` scripts. `prebuild` runs platform compliance check.
 - `.github/workflows/` — deploy (R2, keyless OIDC), compliance (MIT + brand + PWA), CI (typecheck); worker step runs only when `worker/package.json` exists.
 - `.gitignore` — excludes node_modules, dist, .env files.
