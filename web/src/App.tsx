@@ -1,6 +1,11 @@
 import { initPro, ProShell, PageHeader, useAuth, type NavItem } from '@proappstore/sdk'
 
-const app = initPro({ appId: 'APPNAME' })
+const app = initPro({
+  appId: 'APPNAME',
+  // #393: the deploy's commit names this build in every crash report, so the owner
+  // can read its stack against the private source maps uploaded for that commit.
+  monitoring: { build: { sha: import.meta.env.VITE_COMMIT_SHA } },
+})
 
 /**
  * The app's screens. ProShell renders them as its main navigation — a
