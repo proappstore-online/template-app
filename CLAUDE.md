@@ -10,7 +10,7 @@ An independently branded app.
 ## Public branding
 
 Keep public app surfaces app-owned. The starter passes `branding="app"` to
-`ProShell`; do not remove it unless the app owner explicitly wants platform
+`AppShell`; do not remove it unless the app owner explicitly wants platform
 branding. Do not add required platform attribution to the app UI, metadata, PWA
 manifest, or Open Graph image.
 
@@ -53,7 +53,9 @@ This app uses `@proappstore/sdk`. Available modules:
 
 Types: `import type { User, QueryResult, ExecuteResult } from '@proappstore/sdk'`
 Hooks: `import { useProAuth, useTheme } from '@proappstore/sdk/hooks'`
-UI: `import { ProShell, Avatar, ProBadge } from '@proappstore/sdk/ui'`
+UI: `import { AppShell, PageHeader, useToast } from '@proappstore/sdk'`
+`ProShell` is a deprecated alias for `AppShell` (the same component, so mounted state is preserved); use `AppShell` in new code.
+More UI: `import { Avatar, ProBadge } from '@proappstore/sdk/ui'`
 
 ## Database
 

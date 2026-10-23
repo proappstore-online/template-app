@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 import test from 'node:test'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 
 const root = fileURLToPath(new URL('..', import.meta.url))
 const read = (path) => readFileSync(resolve(root, path), 'utf8')
@@ -10,8 +10,23 @@ const read = (path) => readFileSync(resolve(root, path), 'utf8')
 test('the starter uses independently branded shell controls', () => {
   const app = read('web/src/App.tsx')
 
-  assert.match(app, /<ProShell app=\{app\} appName="APPNAME" nav=\{NAV\} branding="app">/)
+  assert.match(app, /<AppShell app=\{app\} appName="APPNAME" nav=\{NAV\} branding="app">/)
   assert.doesNotMatch(app, /Built for ProAppStore|href="https:\/\/proappstore\.online"/)
+})
+
+test('the starter uses AppShell, not the deprecated ProShell alias', () => {
+  const app = read('web/src/App.tsx')
+
+  assert.match(app, /AppShell/)
+  assert.ok(!app.includes('<ProShell'))
+  assert.ok(app.includes('branding="app"'))
+})
+
+test('the installed SDK keeps ProShell as the same component as AppShell', async () => {
+  const sdk = await import(pathToFileURL(resolve(root, 'web/node_modules/@proappstore/sdk/dist/index.js')).href)
+
+  assert.equal(typeof sdk.AppShell, 'function')
+  assert.equal(sdk.ProShell, sdk.AppShell)
 })
 
 test('public starter metadata and manifest are neutral', () => {

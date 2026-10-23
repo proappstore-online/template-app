@@ -1,4 +1,4 @@
-import { initPro, ProShell, PageHeader, useAuth, type NavItem } from '@proappstore/sdk'
+import { initPro, AppShell, PageHeader, useAuth, type NavItem } from '@proappstore/sdk'
 
 const app = initPro({
   appId: 'APPNAME',
@@ -10,7 +10,7 @@ const app = initPro({
 })
 
 /**
- * The app's screens. ProShell renders them as its main navigation — a
+ * The app's screens. AppShell renders them as its main navigation — a
  * <nav aria-label="Main"> in the topbar that marks the current screen and
  * collapses to a menu on small screens — and uses each `title` as the tab title.
  * Add a screen here and in <Screens />; never put navigation on a page.
@@ -22,9 +22,9 @@ const NAV: NavItem[] = [
 
 export default function App() {
   return (
-    <ProShell app={app} appName="APPNAME" nav={NAV} branding="app">
+    <AppShell app={app} appName="APPNAME" nav={NAV} branding="app">
       <Screens />
-    </ProShell>
+    </AppShell>
   )
 }
 
@@ -56,7 +56,7 @@ function About() {
       <PageHeader title="About" description="What APPNAME is for." />
       <p className="text-sm text-[var(--muted)]">
         Replace this screen with your own. The error boundary, loading fallback, toasts
-        (<code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">useToast</code>), offline banner and skip link come with ProShell.
+        (<code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">useToast</code>), offline banner and skip link come with AppShell.
       </p>
     </div>
   )

@@ -23,8 +23,8 @@ importers:
   web:
     dependencies:
       '@proappstore/sdk':
-        specifier: ^1.16.78
-        version: 1.16.78(react@19.2.7)
+        specifier: ^1.16.90
+        version: 1.16.90(react@19.2.7)
       react:
         specifier: ^19.2.5
         version: 19.2.7
@@ -949,8 +949,8 @@ packages:
   '@oxc-project/types@0.154.0':
     resolution: {integrity: sha512-KYOUGQFlLWR+s4QMV2Q9ko38TZm7EdO87Qm7rvZLqk/webse/cDjtyxKhg/47l0byCbs/k46LT8qc4PKjAikzA==}
 
-  '@proappstore/sdk@1.16.78':
-    resolution: {integrity: sha512-KWUQTjIpRxADXFGifg5TFzVMJw9PfLCzC58AmKwZSs5eR+tiJQXbLXQI5/pbGn3h15fzPNlLpPGvHgTRVDAa2w==}
+  '@proappstore/sdk@1.16.90':
+    resolution: {integrity: sha512-3DFHpjpR7hJmLaN9QPJ4Gt8XLXRo6wEJVcQVm1Nf68ebKwZM9WcTJlEUxHKV8zPM9G77sWfvgsF9mjG+EBpbzg==}
     peerDependencies:
       react: ^18.0.0 || ^19.0.0
     peerDependenciesMeta:
@@ -4238,7 +4238,7 @@ snapshots:
 
   '@oxc-project/types@0.154.0': {}
 
-  '@proappstore/sdk@1.16.78(react@19.2.7)':
+  '@proappstore/sdk@1.16.90(react@19.2.7)':
     optionalDependencies:
       react: 19.2.7
 
