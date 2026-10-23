@@ -125,6 +125,12 @@ const all = await tx.findMany('items')
 
 ## Auth
 
+The starter explicitly selects `authMode: 'platform-cookie'` in `initPro()`.
+Keep this mode on PAS-hosted apps: the host owns the HttpOnly session and mediates
+authenticated requests. Do not add session tokens to JavaScript or browser storage.
+Local Vite preview does not provide the host's authentication routes; verify real
+sign-in on the deployed PAS hostname, and use fixtures for local authenticated tests.
+
 ```ts
 app.auth.signIn()         // GitHub OAuth (default)
 app.auth.signIn('google') // Google OAuth

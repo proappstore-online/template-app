@@ -2,6 +2,8 @@ import { initPro, ProShell, PageHeader, useAuth, type NavItem } from '@proappsto
 
 const app = initPro({
   appId: 'APPNAME',
+  // Hosted apps use the host-owned HttpOnly session, never a browser-stored token.
+  authMode: 'platform-cookie',
   // #393: the deploy's commit names this build in every crash report, so the owner
   // can read its stack against the private source maps uploaded for that commit.
   monitoring: { build: { sha: import.meta.env.VITE_COMMIT_SHA } },
