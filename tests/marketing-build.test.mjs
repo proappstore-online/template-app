@@ -42,6 +42,14 @@ test('real marketing builds publish canonical crawl files and exclude preview pa
       else assert(robots.includes(`Sitemap: ${origin}/sitemap.xml`))
       for (const [index, path] of ['index.html', 'privacy/index.html', 'terms/index.html'].entries()) {
         const html = read(path)
+        const image = html.match(/property="og:image" content="([^"]+)"/)?.[1]
+        assert(image, path)
+        const imageUrl = new URL(image)
+        assert.equal(imageUrl.origin, origin)
+        const png = readFileSync(join(fixture, 'dist', imageUrl.pathname))
+        assert.equal(png.toString('hex', 0, 8), '89504e470d0a1a0a')
+        assert(png.readUInt32BE(16) >= 200 && png.readUInt32BE(20) >= 200)
+        assert(html.includes('name="twitter:card" content="summary"'))
         assert(html.includes(`name="robots" content="${preview ? 'noindex, nofollow' : 'index, follow'}"`), path)
         assert(html.includes(`rel="canonical" href="${urls[index]}"`), path)
         assert(html.includes(`property="og:url" content="${urls[index]}"`), path)
