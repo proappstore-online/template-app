@@ -34,6 +34,10 @@ This adds a `worker/` directory for those workloads. `worker/` is absent by defa
 
 ## CI
 
+Marketing builds emit crawl files for the home, Privacy and Terms pages. Build a separate preview
+with `PAS_MARKETING_PREVIEW=true pnpm build:marketing` to emit noindex HTML and exclude its URLs
+from sitemap discovery. Keep that artifact separate from the production marketing deployment.
+
 Every workflow begins with a `router` job that calls
 [`ProAgentStore/runner-router`](https://github.com/ProAgentStore/runner-router)
 (`.github/workflows/router.yml@v1`), and every other job runs wherever the router says. Which

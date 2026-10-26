@@ -11,7 +11,7 @@ test('the marketing site pins Astro and ships home, Privacy and Terms pages', ()
   const pkg = JSON.parse(read('marketing/package.json'))
 
   assert.match(pkg.devDependencies.astro, /^\d+\.\d+\.\d+$/)
-  assert.deepEqual(readdirSync(resolve(root, 'marketing/src/pages')).sort(), ['index.astro', 'privacy.astro', 'terms.astro'])
+  assert.deepEqual(readdirSync(resolve(root, 'marketing/src/pages')).sort(), ['index.astro', 'privacy.astro', 'robots.txt.ts', 'sitemap.xml.ts', 'terms.astro'])
   assert.match(read('marketing/astro.config.ts'), /output: 'static'/)
 })
 

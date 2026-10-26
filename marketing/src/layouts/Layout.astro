@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css'
 import { site } from '../site'
+import { isPreview } from '../lib/seo'
 
 interface Props {
   title: string
@@ -29,7 +30,7 @@ const links = [
     <meta name="theme-color" content={site.colors.accent} />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content={isPreview ? 'noindex, nofollow' : 'index, follow'} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" href="/icon-192.png" type="image/png" />
     <meta property="og:type" content="website" />

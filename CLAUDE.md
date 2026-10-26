@@ -24,6 +24,12 @@ Privacy Policy, Terms & Conditions). Edit copy, owner, contact and colours in
 `marketing/src/site.ts` (colours feed the Tailwind theme) and the pages freely; keep claims true and versions
 pinned. `pnpm dev:marketing` / `pnpm build:marketing` (HTML in `marketing/dist/`).
 
+Production builds include `robots.txt` and `sitemap.xml` for the three public brochure pages.
+For a separately hosted preview artifact, build with `PAS_MARKETING_PREVIEW=true pnpm build:marketing`:
+every HTML page is noindex, robots advertises no sitemap, and the preview sitemap contains no URLs.
+Keep previews crawler-readable so crawlers can see the noindex directive. This build flag does not
+change deployment routing; do not publish a preview artifact as the production marketing revision.
+
 ## SDK
 
 This app uses `@proappstore/sdk`. Available modules:
