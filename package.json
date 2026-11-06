@@ -2,8 +2,14 @@
   "name": "APPNAME",
   "private": true,
   "packageManager": "pnpm@10.30.3",
-  "engines": { "node": ">=22" },
-  "pnpm": { "onlyBuiltDependencies": ["esbuild"] },
+  "engines": {
+    "node": ">=22"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
+  },
   "scripts": {
     "dev": "pnpm --filter @APPNAME/web dev",
     "prebuild": "npx -y @proappstore/cli@latest check",
@@ -12,6 +18,10 @@
     "dev:marketing": "pnpm --filter @APPNAME/marketing dev",
     "build:marketing": "pnpm --filter @APPNAME/marketing build",
     "typecheck": "pnpm --filter @APPNAME/web exec tsc -b",
-    "test": "pnpm --filter @APPNAME/web exec tsc -b && node --test tests/*.test.mjs"
+    "test": "pnpm --filter @APPNAME/web exec tsc -b && node --test tests/*.test.mjs",
+    "test:browser": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.65.0"
   }
 }

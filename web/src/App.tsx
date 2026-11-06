@@ -1,63 +1,68 @@
-import { initPro, AppShell, PageHeader, useAuth, type NavItem } from '@proappstore/sdk'
+import { useEffect, useState } from 'react'
+import { initPro, AppShell, useAuth, type NavItem } from '@proappstore/sdk'
+import { Card, PageHeader, ProProfilePage, SignInButtons, TextSizeToggle, ThemeToggle } from '@proappstore/sdk/ui'
+import { AppTopbar, IconNavigation, NavigationIcon } from './AppNavigation'
 
 const app = initPro({
   appId: 'APPNAME',
-  // Hosted apps use the host-owned HttpOnly session, never a browser-stored token.
   authMode: 'platform-cookie',
-  // #393: the deploy's commit names this build in every crash report, so the owner
-  // can read its stack against the private source maps uploaded for that commit.
   monitoring: { build: { sha: import.meta.env.VITE_COMMIT_SHA } },
 })
 
-/**
- * The app's screens. AppShell renders them as its main navigation — a
- * <nav aria-label="Main"> in the topbar that marks the current screen and
- * collapses to a menu on small screens — and uses each `title` as the tab title.
- * Add a screen here and in <Screens />; never put navigation on a page.
- */
+// Keep Profile in NAV for page titles; its visible navigation target is the avatar.
+// Give each primary screen an icon. Labels remain accessible on mobile and visible on desktop.
 const NAV: NavItem[] = [
-  { label: 'Home', href: '/', title: 'APPNAME' },
-  { label: 'About', href: '/about', title: 'About — APPNAME' },
+  { label: 'Home', href: '/', title: 'APPNAME', icon: <NavigationIcon path="m3 10 9-7 9 7v10H3V10Zm6 10v-7h6v7"/> },
+  { label: 'About', href: '/about', title: 'About — APPNAME', icon: <NavigationIcon path="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Zm0 7v7m0-10v.01"/> },
+  { label: 'Profile', href: '/profile', title: 'Profile — APPNAME' },
 ]
 
-export default function App() {
-  return (
-    <AppShell app={app} appName="APPNAME" nav={NAV} branding="app">
-      <Screens />
-    </AppShell>
-  )
+function navigate(path: string) {
+  history.pushState({}, '', path)
+  window.dispatchEvent(new PopStateEvent('popstate'))
 }
 
-/** Nav items are plain links: a click loads the path and the platform serves the app for it. */
-function Screens() {
-  switch (window.location.pathname) {
-    case '/about': return <About />
-    default: return <Home />
-  }
+export default function App() {
+  const [path, setPath] = useState(location.pathname)
+  useEffect(() => {
+    const changed = () => setPath(location.pathname)
+    window.addEventListener('popstate', changed)
+    return () => window.removeEventListener('popstate', changed)
+  }, [])
+  return <AppShell app={app} appName="APPNAME" nav={NAV} branding="app" access="local"
+    renderNav={context => <IconNavigation {...context}/>}
+    renderLocalTopbar={context => <AppTopbar {...context} currentPath={path} onNavigate={navigate}/>}
+    onNavigate={navigate}>
+    <Screens path={path}/>
+  </AppShell>
+}
+
+function Screens({ path }: { path: string }) {
+  if (path === '/profile') return <Profile/>
+  if (path === '/about') return <About/>
+  return <Home/>
 }
 
 function Home() {
   const { user } = useAuth()
-
-  return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10">
-      <PageHeader title="APPNAME" description={`Signed in as ${user?.name ?? 'you'}.`} />
-      <p className="text-sm text-[var(--muted)]">
-        Edit <code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">web/src/App.tsx</code> to start building.
-        Each screen starts with a <code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">PageHeader</code> and is listed in <code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">NAV</code>.
-      </p>
-    </div>
-  )
+  return <div className="mx-auto w-full max-w-3xl px-6 py-10">
+    <PageHeader title="APPNAME" description={user ? `Signed in as ${user.name}.` : 'Welcome. Open Profile to sign in or change your preferences.'}/>
+    <p className="text-sm text-[var(--muted)]">Build your app here. Add primary screens to NAV with icons. The avatar always opens your Profile page.</p>
+  </div>
 }
 
 function About() {
-  return (
-    <div className="mx-auto w-full max-w-3xl px-6 py-10">
-      <PageHeader title="About" description="What APPNAME is for." />
-      <p className="text-sm text-[var(--muted)]">
-        Replace this screen with your own. The error boundary, loading fallback, toasts
-        (<code className="rounded bg-[var(--line)] px-1.5 py-0.5 text-xs">useToast</code>), offline banner and skip link come with AppShell.
-      </p>
-    </div>
-  )
+  return <div className="mx-auto w-full max-w-3xl px-6 py-10">
+    <PageHeader title="About" description="What APPNAME is for."/>
+    <p className="text-sm text-[var(--muted)]">Replace this screen with your own. Error recovery, offline status, accessible navigation and page titles come from AppShell.</p>
+  </div>
+}
+
+function Profile() {
+  const { user } = useAuth()
+  return <div className="mx-auto w-full max-w-3xl space-y-6 px-6 py-10">
+    <PageHeader title="Profile" description="Your account and preferences."/>
+    <Card><h2 className="mb-4 text-lg font-bold">Appearance</h2><div className="flex flex-wrap items-center gap-4"><ThemeToggle/><TextSizeToggle/></div></Card>
+    <Card>{user ? <ProProfilePage app={app} showThemeToggle={false}/> : <><h2 className="mb-3 text-lg font-bold">Sign in</h2><p className="mb-4 text-sm text-[var(--muted)]">Use your account to access private app features.</p><SignInButtons app={app}/></>}</Card>
+  </div>
 }

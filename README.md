@@ -94,3 +94,11 @@ These defaults also apply when launched from the home screen. Browser or accessi
 settings can override zoom restrictions. For an app that needs browser pinch zoom,
 remove `maximum-scale` and `user-scalable` from `web/index.html` and change the root
 `touch-action` rules to `manipulation`. Keep the app's text-size controls available.
+
+## Mobile navigation and Profile
+
+The starter uses the same compact pattern as Ski: app name, always-visible primary screen icons, and an avatar opening a dedicated `/profile` page. On desktop the primary icons also have text labels. Sign-in, account, appearance and text-size controls belong on Profile. Signed-out users see a profile outline; signed-in users see their SDK avatar.
+
+`AppNavigation.tsx` supplies `IconNavigation` and `AppTopbar` through AppShell slots. Add screens and icons in `NAV`, keeping at most four primary mobile destinations. Profile stays in NAV for title handling but appears only as the avatar. Client-side navigation preserves mounted app state. The local shell does not authorize data access; private screens and registered actions must enforce authentication.
+
+Run `pnpm test:browser` to check 360px/desktop navigation, avatar access, account states and page refreshes.

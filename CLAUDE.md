@@ -17,6 +17,21 @@ manifest, or Open Graph image.
 For platform conventions, read the AI Agent Guide:
 https://proappstore.online/skills.md
 
+## Navigation and Profile
+
+The starter includes Ski-style mobile chrome in `web/src/AppNavigation.tsx`:
+app name, visible primary navigation icons, then a 44px avatar button opening
+`/profile`. Desktop also shows navigation labels. Keep Profile in NAV for page
+titles; it is rendered only as the avatar, not a duplicate navigation item.
+Use AppShell's `renderNav` and `renderLocalTopbar` slots; do not stack another navbar.
+Keep sign-in, appearance and account controls on the Profile page using SDK controls.
+Add an icon to each primary NAV entry. Keep the mobile primary list short (up to four).
+
+`access="local"` makes the shell and Profile available before sign-in; it does not
+authorize private data. Check `useAuth().user` before loading private screens/data,
+and enforce ownership in registered actions. An app that needs a full sign-in gate
+may select authenticated access and use `renderTopbar` with the same AppTopbar.
+
 ## Marketing site
 
 `marketing/` is the static Astro + Tailwind site for `about-APPNAME.proappstore.online` (home,
