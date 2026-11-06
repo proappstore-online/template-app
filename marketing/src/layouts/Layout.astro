@@ -10,7 +10,7 @@ interface Props {
 
 const { title, description } = Astro.props
 const canonical = new URL(Astro.url.pathname, Astro.site)
-const socialImage = new URL(site.heroImage?.src ?? '/icon-512.png', Astro.site)
+const socialImage = new URL(site.heroImage?.src ?? '/icon-512.png?v=neutral-1', Astro.site)
 // Brand colours as --brand-* custom properties; src/styles/global.css maps them into the Tailwind theme.
 const palette = Object.entries(site.colors)
   .map(([name, value]) => `--brand-${name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`)}: ${value}`)
@@ -32,7 +32,8 @@ const links = [
     <meta name="description" content={description} />
     <meta name="robots" content={isPreview ? 'noindex, nofollow' : 'index, follow'} />
     <link rel="canonical" href={canonical} />
-    <link rel="icon" href="/icon-192.png" type="image/png" />
+    <link rel="icon" href="/icon-192.png?v=neutral-1" type="image/png" />
+    <link rel="apple-touch-icon" href="/icon-192.png?v=neutral-1" />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -48,7 +49,7 @@ const links = [
     <a class="absolute -left-[999px] top-3 z-10 bg-paper p-2.5 focus:left-3" href="#main">Skip to content</a>
     <header class="mx-auto flex h-20 w-[min(1160px,calc(100%-48px))] items-center justify-between max-sm:h-18">
       <a class="inline-flex items-center gap-3 text-lg font-extrabold tracking-tight no-underline" href="/">
-        <img src="/icon-192.png" alt="" width="28" height="28" class="rounded-lg" />{site.name}
+        <img src="/icon-192.png?v=neutral-1" alt="" width="28" height="28" class="rounded-lg" />{site.name}
       </a>
       <a class="border-b border-current pb-0.5 font-bold no-underline" href={site.appUrl}>{site.ctaLabel}<span aria-hidden="true"> ↗</span></a>
     </header>

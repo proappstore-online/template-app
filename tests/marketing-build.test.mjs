@@ -16,7 +16,7 @@ test('real marketing builds publish canonical crawl files and exclude preview pa
       recursive: true,
       filter: (path) => !['node_modules', 'dist', '.astro'].includes(basename(path)),
     })
-    symlinkSync(realpathSync(join(marketing, 'node_modules')), join(fixture, 'node_modules'), 'dir')
+    symlinkSync(realpathSync(join(marketing, 'node_modules')), join(fixture, 'node_modules'), 'junction')
     for (const path of ['astro.config.ts', 'src/site.ts']) {
       const file = join(fixture, path)
       writeFileSync(file, readFileSync(file, 'utf8').replaceAll('APPNAME', 'seo-template-check'))
@@ -24,7 +24,7 @@ test('real marketing builds publish canonical crawl files and exclude preview pa
     const origin = 'https://about-seo-template-check.proappstore.online'
     const urls = ['/', '/privacy/', '/terms/'].map((path) => new URL(path, origin).href)
     for (const preview of [false, true]) {
-      const result = spawnSync('pnpm', ['exec', 'astro', 'build'], {
+      const result = spawnSync(process.execPath, [process.env.npm_execpath, 'exec', 'astro', 'build'], {
         cwd: fixture,
         env: { ...process.env, PAS_MARKETING_PREVIEW: String(preview), ASTRO_TELEMETRY_DISABLED: '1' },
         encoding: 'utf8',
@@ -49,6 +49,13 @@ test('real marketing builds publish canonical crawl files and exclude preview pa
         const png = readFileSync(join(fixture, 'dist', imageUrl.pathname))
         assert.equal(png.toString('hex', 0, 8), '89504e470d0a1a0a')
         assert(png.readUInt32BE(16) >= 200 && png.readUInt32BE(20) >= 200)
+        for (const rel of ['icon', 'apple-touch-icon']) {
+          const href = html.match(new RegExp(`<link rel="${rel}" href="([^"]+)"`))?.[1]
+          assert(href, `${path}: ${rel}`)
+          const url = new URL(href, origin)
+          assert(url.search, 'invalidate previously cached F icons')
+          assert.deepEqual(readFileSync(join(fixture, 'dist', url.pathname)), readFileSync(join(marketing, 'public/icon-192.png')))
+        }
         assert(html.includes('name="twitter:card" content="summary"'))
         assert(html.includes(`name="robots" content="${preview ? 'noindex, nofollow' : 'index, follow'}"`), path)
         assert(html.includes(`rel="canonical" href="${urls[index]}"`), path)
