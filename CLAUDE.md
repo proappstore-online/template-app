@@ -102,8 +102,9 @@ owner opened the app).
 
 **Rules for `migrations.json` (enforced by the platform on deploy):**
 - **Additive only** — `CREATE TABLE/INDEX/VIEW/TRIGGER`, `ALTER TABLE … ADD COLUMN`,
-  `INSERT INTO`. Destructive statements (`DROP`, `RENAME`, `DELETE`, `UPDATE`, `PRAGMA`)
-  are **rejected** — the deploy fails. Evolve schema by adding columns/tables, never
+  `INSERT INTO`. Destructive statements (`DROP`, `RENAME`, `DROP COLUMN`, `DELETE`, `UPDATE`,
+  `REPLACE`/`INSERT OR REPLACE`, upsert `DO UPDATE`, `PRAGMA`, `TEMP` objects) are
+  **rejected** — the deploy fails. Evolve schema by adding columns/tables, never
   by dropping (expand/contract). Keep new columns nullable or defaulted so existing
   rows stay valid and old code keeps working. `ALTER TABLE ... ADD COLUMN ... NOT NULL`
   without a non-null `DEFAULT` is also rejected; add a nullable/defaulted column first, deploy
@@ -145,6 +146,16 @@ const tx = app.db.tenant('workspace-id')
 await tx.insert('items', { id, title })
 const all = await tx.findMany('items')
 ```
+
+### D1 limits for `mcp.json` actions
+
+D1 refuses what local SQLite allows. Each action statement may bind at most **100**
+parameters (every `:name` occurrence counts, `:__user_id` included) and have at most
+**5** terms in one `UNION`/`UNION ALL`/`INTERSECT`/`EXCEPT` chain. Bind a repeated value
+once (`JOIN (SELECT :from AS d_from) p`) and nest longer unions in parenthesised groups
+of at most 5. Registration refuses a new action over either limit, and `pas check` warns.
+Run every registered statement on Miniflare's D1 in tests:
+https://docs.proappstore.online/mcp-app-tools/#d1-limits
 
 ## Auth
 
