@@ -23,3 +23,8 @@ test('APPNAME appears only in files pas create substitutes', () => {
     assert.doesNotMatch(readFileSync(file, 'utf8'), /APPNAME/, file)
   }
 })
+
+test('with no contactEmail the legal pages point at the home page contact form (platform#588)', () => {
+  assert.match(read('marketing/src/pages/index.astro'), /<section id="contact"[^>]*>[\s\S]*?action=\{`https:\/\/api\.proappstore\.online\/v1\/apps\/\$\{site\.appId\}\/enquiries`\}/)
+  assert.match(read('marketing/src/site.ts'), /: `use the contact form at https:\/\/about-\$\{site\.appId\}\.proappstore\.online\/#contact`/)
+})
