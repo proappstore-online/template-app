@@ -38,6 +38,24 @@ const heading = 'mb-10 text-4xl font-bold leading-tight tracking-tight sm:text-5
     </div>
   </section>
 
+  {site.features.length > 0 && (
+    <section class={`${wrap} py-20 sm:py-28`}>
+      <p class={eyebrow}>Features</p>
+      <h2 class={heading}>A closer look</h2>
+      <div class="grid gap-16 sm:gap-24">
+        {site.features.map((feature, index) => (
+          <article class={feature.image ? 'grid items-center gap-8 md:grid-cols-2 md:gap-14' : 'max-w-2xl'}>
+            <div class={feature.image && index % 2 === 1 ? 'md:order-2' : ''}>
+              <h3 class="mb-4 text-2xl font-bold tracking-tight sm:text-3xl">{feature.title}</h3>
+              <p class="text-lg leading-relaxed text-muted">{feature.body}</p>
+            </div>
+            {feature.image && <img class="w-full rounded-2xl border border-ink/10 shadow-xl" src={feature.image.src} alt={feature.image.alt} loading="lazy" />}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
   <section class={`${wrap} grid gap-x-[10%] py-20 sm:py-28 md:grid-cols-[.8fr_1.2fr]`}>
     <div>
       <p class={eyebrow}>How it works</p>
@@ -62,6 +80,68 @@ const heading = 'mb-10 text-4xl font-bold leading-tight tracking-tight sm:text-5
         <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {site.screenshots.map((image) => <img class="w-full rounded-xl shadow-lg" src={image.src} alt={image.alt} loading="lazy" />)}
         </div>
+      </div>
+    </section>
+  )}
+
+  {site.phoneScreenshots.length > 0 && (
+    <section class={`${wrap} py-20 sm:py-28`}>
+      <p class={eyebrow}>On your phone</p>
+      <h2 class={heading}>Made for the small screen</h2>
+      <div class="flex gap-6 overflow-x-auto pb-4 sm:justify-center">
+        {site.phoneScreenshots.map((image) => <img class="w-56 shrink-0 rounded-3xl border-4 border-ink shadow-xl sm:w-64" src={image.src} alt={image.alt} loading="lazy" />)}
+      </div>
+    </section>
+  )}
+
+  {site.audience.length > 0 && (
+    <section class="bg-paper-deep py-20 sm:py-28">
+      <div class={wrap}>
+        <p class={eyebrow}>Who it's for</p>
+        <h2 class={heading}>Built for people like you</h2>
+        <div class="grid gap-5 md:grid-cols-3">
+          {site.audience.map((point) => (
+            <article class="rounded-2xl border border-ink/10 bg-paper p-7">
+              <h3 class="mb-2.5 text-xl font-bold tracking-tight">{point.title}</h3>
+              <p class="leading-relaxed text-muted">{point.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {site.install && (
+    <section class={`${wrap} py-20 sm:py-28`}>
+      <p class={eyebrow}>Install</p>
+      <h2 class={heading}>Keep {site.name} on your Home Screen</h2>
+      <p class="mb-10 max-w-2xl text-lg leading-relaxed text-muted">{site.name} runs in your browser, so there is nothing to download from an app store. Install it and it opens like any other app.</p>
+      <div class="grid gap-5 md:grid-cols-3">
+        {[
+          { title: 'iPhone and iPad', body: `Open ${site.name} in Safari, tap Share, then Add to Home Screen.` },
+          { title: 'Android', body: `Open ${site.name} in Chrome, open the menu, then tap Install app or Add to Home screen.` },
+          { title: 'Computer', body: `Open ${site.name} in Chrome or Edge and choose Install from the address bar.` },
+        ].map((way) => (
+          <article class="rounded-2xl border border-ink/10 p-7">
+            <h3 class="mb-2.5 text-xl font-bold tracking-tight">{way.title}</h3>
+            <p class="leading-relaxed text-muted">{way.body}</p>
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {site.faq.length > 0 && (
+    <section class="bg-paper-deep py-20 sm:py-28">
+      <div class={`${wrap} max-w-3xl`}>
+        <p class={eyebrow}>Questions</p>
+        <h2 class={heading}>Good to know</h2>
+        {site.faq.map((item) => (
+          <details class="border-b border-ink/15 py-5">
+            <summary class="cursor-pointer text-lg font-bold tracking-tight">{item.question}</summary>
+            <p class="mt-3 leading-relaxed text-muted">{item.answer}</p>
+          </details>
+        ))}
       </div>
     </section>
   )}

@@ -28,3 +28,14 @@ test('with no contactEmail the legal pages point at the home page contact form (
   assert.match(read('marketing/src/pages/index.astro'), /<section id="contact"[^>]*>[\s\S]*?action=\{`https:\/\/api\.proappstore\.online\/v1\/apps\/\$\{site\.appId\}\/enquiries`\}/)
   assert.match(read('marketing/src/site.ts'), /: `use the contact form at https:\/\/about-\$\{site\.appId\}\.proappstore\.online\/#contact`/)
 })
+
+test('optional home page sections are driven by site.ts and empty by default (#6)', () => {
+  const site = read('marketing/src/site.ts')
+  const home = read('marketing/src/pages/index.astro')
+  for (const field of ['features', 'audience', 'phoneScreenshots', 'faq']) {
+    assert.match(site, new RegExp(`\\n  ${field}: \\[\\] as `), field)
+    assert.match(home, new RegExp(`\\{site\\.${field}\\.length > 0 && \\(`), field)
+  }
+  assert.match(site, /\n  install: true,/)
+  assert.match(home, /\{site\.install && \(/)
+})
