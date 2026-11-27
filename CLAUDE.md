@@ -39,6 +39,19 @@ Privacy Policy, Terms & Conditions). Edit copy, owner, contact and colours in
 `marketing/src/site.ts` (colours feed the Tailwind theme) and the pages freely; keep claims true and versions
 pinned. `pnpm dev:marketing` / `pnpm build:marketing` (HTML in `marketing/dist/`).
 
+The home page includes an anonymous “Help improve this app” form in
+`marketing/src/components/TeamJoinForm.astro`. It posts name/email/message and the `website`
+honeypot natively to `/v1/storefront/apps/:appId/enquiries/team-join`; no public team identities or
+profile requests are needed. The server checks public availability and the owner's recruitment
+setting on submission. Fixed `#team-join-<outcome>` banners work without JavaScript under the
+marketing host CSP (`form-action 'self' https://api.proappstore.online` permits the fixed 303
+return to this site). Contact details never belong in a redirect URL. Keep the general contact form
+separate. Shared template updates reach new scaffolds and newly added marketing sites; existing
+customized pages are not overwritten by `pas marketing add` or `add_marketing_site`.
+
+Verify this form with `pnpm exec playwright test --config playwright.marketing.config.ts`
+(Chromium and WebKit, 320px and 390px, JavaScript disabled, synthetic requests only).
+
 Production builds include `robots.txt` and `sitemap.xml` for the three public brochure pages.
 For a separately hosted preview artifact, build with `PAS_MARKETING_PREVIEW=true pnpm build:marketing`:
 every HTML page is noindex, robots advertises no sitemap, and the preview sitemap contains no URLs.

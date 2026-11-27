@@ -1,0 +1,44 @@
+---
+import { site } from '../site'
+
+const field = 'w-full min-w-0 rounded-lg border border-ink/30 bg-paper px-4 py-3 focus:outline-none focus:ring-2 focus:ring-accent-deep'
+---
+<section id="team-join" aria-labelledby="team-join-heading" class="mx-auto w-[min(1160px,calc(100%-48px))] py-20">
+  <div class="max-w-xl">
+    <p class="mb-6 text-xs font-extrabold uppercase tracking-[.18em] text-accent-deep">Get involved</p>
+    <h2 id="team-join-heading" class="mb-6 text-4xl font-bold leading-tight tracking-tight sm:text-5xl">Help improve this app</h2>
+    <p id="team-join-description" class="mb-6 leading-relaxed text-muted">Tell the app owner how you'd like to contribute. Availability is checked when you submit. Your contact details stay in the owner's private inbox. Sending a request does not give you membership or access to the app's code or data.</p>
+
+    {/* The API redirects to a fixed fragment. CSS :target works without JavaScript. */}
+    <div id="team-join-sent" role="status" tabindex="-1" class="mb-8 hidden scroll-mt-6 rounded-lg bg-green-50 p-6 text-green-800 target:block">
+      <strong>Request sent.</strong> The owner can review it in their inbox. A response is not guaranteed.
+    </div>
+    <div id="team-join-invalid" role="alert" tabindex="-1" class="mb-8 hidden scroll-mt-6 rounded-lg bg-red-50 p-6 text-red-800 target:block">
+      <strong>Check your details.</strong> Enter your name, a valid email and a plain-text message, then try again.
+    </div>
+    <div id="team-join-rate-limited" role="alert" tabindex="-1" class="mb-8 hidden scroll-mt-6 rounded-lg bg-yellow-50 p-6 text-yellow-800 target:block">
+      <strong>Please wait before trying again.</strong> Too many requests have been sent. Try again later.
+    </div>
+    <div id="team-join-unavailable" role="alert" tabindex="-1" class="mb-8 hidden scroll-mt-6 rounded-lg bg-yellow-50 p-6 text-yellow-800 target:block">
+      <strong>Requests are unavailable.</strong> This app is not accepting requests to join right now. Your request was not sent.
+    </div>
+
+    <form method="POST" action={`https://api.proappstore.online/v1/storefront/apps/${site.appId}/enquiries/team-join`}
+      enctype="application/x-www-form-urlencoded" aria-label="Request to join" aria-describedby="team-join-description" class="space-y-6">
+      <input type="text" name="website" class="hidden" tabindex="-1" autocomplete="off" aria-hidden="true" />
+      <div>
+        <label for="team-join-name" class="mb-1 block text-sm font-semibold">Name</label>
+        <input id="team-join-name" name="name" type="text" autocomplete="name" required maxlength="100" class={field} />
+      </div>
+      <div>
+        <label for="team-join-email" class="mb-1 block text-sm font-semibold">Email</label>
+        <input id="team-join-email" name="email" type="email" autocomplete="email" required maxlength="254" class={field} />
+      </div>
+      <div>
+        <label for="team-join-message" class="mb-1 block text-sm font-semibold">How would you like to help?</label>
+        <textarea id="team-join-message" name="message" required maxlength="5000" rows="5" class={field}></textarea>
+      </div>
+      <button type="submit" class="inline-flex min-h-11 items-center rounded-lg bg-accent-deep px-5 py-4 font-bold text-white shadow-lg hover:brightness-110">Request to join</button>
+    </form>
+  </div>
+</section>

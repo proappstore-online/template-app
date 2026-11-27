@@ -42,6 +42,15 @@ test('real marketing builds publish canonical crawl files and exclude preview pa
       else assert(robots.includes(`Sitemap: ${origin}/sitemap.xml`))
       for (const [index, path] of ['index.html', 'privacy/index.html', 'terms/index.html'].entries()) {
         const html = read(path)
+        if (index === 0) {
+          assert(html.includes('action="https://api.proappstore.online/v1/storefront/apps/seo-template-check/enquiries/team-join"'))
+          assert(html.includes('enctype="application/x-www-form-urlencoded"'))
+          for (const outcome of ['sent', 'invalid', 'rate-limited', 'unavailable']) {
+            assert(html.includes(`id="team-join-${outcome}"`))
+          }
+          assert(html.includes('Availability is checked when you submit.'))
+          assert.doesNotMatch(html, /<script(?![^>]*type="application\/ld\+json")/)
+        }
         const image = html.match(/property="og:image" content="([^"]+)"/)?.[1]
         assert(image, path)
         const imageUrl = new URL(image)

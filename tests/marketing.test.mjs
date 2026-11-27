@@ -39,3 +39,20 @@ test('optional home page sections are driven by site.ts and empty by default (#6
   assert.match(site, /\n  install: true,/)
   assert.match(home, /\{site\.install && \(/)
 })
+
+test('anonymous recruitment uses native forms, fixed outcomes and no public roster (platform#541)', () => {
+  const component = read('marketing/src/components/TeamJoinForm.astro')
+  assert.match(read('marketing/src/pages/index.astro'), /<TeamJoinForm \/>/)
+  assert.match(component, /method="POST"/)
+  assert.match(component, /action=\{`https:\/\/api\.proappstore\.online\/v1\/storefront\/apps\/\$\{site.appId\}\/enquiries\/team-join`\}/)
+  assert.match(component, /enctype="application\/x-www-form-urlencoded"/)
+  assert.doesNotMatch(component, /<script|fetch\(|avatar|github|profile|return_url|redirect_uri/i)
+  for (const outcome of ['sent', 'invalid', 'rate-limited', 'unavailable']) {
+    assert.match(component, new RegExp(`id="team-join-${outcome}"[^>]+target:block`))
+  }
+  for (const [field, limit] of [['name', 100], ['email', 254], ['message', 5000]]) {
+    assert.match(component, new RegExp(`name="${field}"[^>]+required[^>]+maxlength="${limit}"`))
+  }
+  assert.match(component, /name="website"[^>]+tabindex="-1"/)
+  assert.match(component, /Availability is checked when you submit/)
+})
